@@ -1,64 +1,81 @@
-**Job Portal & Email Automation System
-**This is a full-stack web application for a job portal that includes separate dashboards for users and administrators. The admin dashboard features an email automation system to communicate with candidates.
+Job Portal & Email Automation System
 
-Features
-User Authentication: Secure registration and login for users and admins.
+A full-stack web application that streamlines the recruitment process with separate dashboards for users and administrators.
+The Admin Dashboard includes a powerful email automation system to communicate with candidates using predefined templates.
 
-Job Listings: Publicly viewable job openings that users can apply to.
+✨ Features
+👤 User Features
 
-Admin Dashboard: A central place for administrators to manage the application.
+🔐 Authentication – Secure user & admin login/registration
 
-Candidate Management: Admins can add, view, and manage a list of candidates.
+📋 Job Listings – Browse all available jobs
 
-Email Automation: Send customized emails to candidates using predefined templates (e.g., interview invitations, rejection letters).
+📝 Apply for Jobs – Submit applications easily
 
-Application Tracking: Admins can view a list of all job applications.
+📊 Application Tracking – Track your job applications
 
-Email Logging: Track the status of all sent emails.
+👨‍💼 Admin Features
 
-Tech Stack
-Frontend: HTML, CSS, JavaScript
+🖥 Admin Dashboard – Manage jobs, users, and candidates
 
-Backend: Python with Flask
+👥 Candidate Management – Add, edit, and remove candidate records
 
-Database: MySQL
+💼 Job Management – Post, update, or remove job listings
 
-Libraries:
+📧 Email Automation – Send interview invites, rejection letters, or custom emails using templates
 
-Flask-Cors for handling Cross-Origin Resource Sharing.
+🗂 Email Logging – Track sent emails and errors
 
-mysql-connector-python for database connectivity.
+🛠 Tech Stack
 
-bcrypt for password hashing.
+Frontend:
 
-PyJWT for generating authentication tokens.
+HTML, CSS, JavaScript
 
-Prerequisites
-Before you begin, ensure you have the following installed on your system:
+Backend:
+
+Python (Flask)
+
+Database:
+
+MySQL
+
+Libraries & Tools:
+
+Flask – Web framework
+
+Flask-Cors – Handle CORS
+
+mysql-connector-python – Database connectivity
+
+bcrypt – Secure password hashing
+
+PyJWT – Authentication with JSON Web Tokens
+
+⚙️ Prerequisites
+
+Make sure you have installed:
 
 Python 3.x
 
 MySQL Server
 
-Installation & Setup
-Follow these steps to get the application up and running on your local machine.
+Git
 
-1. Clone the Repository
-Bash
+🚀 Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/your-username/job-portal-email-automation.git
+cd job-portal-email-automation
 
-git clone <your-repository-url>
-cd <repository-folder>
-2. Set Up the Database
-Log in to your MySQL server and create a new database for the project.
+2️⃣ Set Up the Database
 
-SQL
+Login to MySQL and create the database:
 
 CREATE DATABASE job_portal;
-Use the new database and create the required tables by running the following SQL script:
-
-SQL
-
 USE job_portal;
+
+
+Create the required tables:
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,46 +122,45 @@ CREATE TABLE email_logs (
     error_message TEXT,
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-3. Configure the Backend
-Install the required Python libraries.
 
-Bash
+3️⃣ Configure the Backend
+
+Install dependencies:
 
 pip install Flask Flask-Cors mysql-connector-python bcrypt PyJWT
-Open the updated_email.py file and update the following configurations:
 
-Database Connection: On line 16, replace "your_password" with your MySQL root password.
 
-SMTP Settings: On lines 23-24, enter your Gmail address and a Google App Password to enable email sending.
+Edit updated_email.py:
 
-4. Create an Admin User
-Run the generate_hash.py script to create a secure hash for your admin password.
+Replace your_password (line 16) with your MySQL root password
 
-Bash
+Enter your Gmail & App Password (lines 23–24) for SMTP email sending
+
+4️⃣ Create an Admin User
+
+Generate a secure password hash:
 
 python generate_hash.py
-Copy the output hash.
 
-In your MySQL database, run the following command to insert the admin user. Replace the email, password hash, and name as needed.
 
-SQL
+Copy the generated hash and insert an admin record into MySQL:
 
-INSERT INTO users (name, email, password_hash, role)
+INSERT INTO users (name, email, password_hash, role) 
 VALUES ('Admin User', 'admin@example.com', 'PASTE_YOUR_GENERATED_HASH_HERE', 'admin');
-Running the Application
-Start the Backend Server:
-Run the main Python application from your terminal.
 
-Bash
+5️⃣ Run the Application
+
+Start the backend server:
 
 python updated_email.py
-The server will start, typically on http://127.0.0.1:5000. Keep this terminal window open.
 
-Access the Frontend:
-Open the .html files in your web browser to use the application.
 
-Main Page: Open index.html to see the landing page.
+Server will run on: http://127.0.0.1:5000
 
-Admin Login: Navigate to admin_login.html to access the admin dashboard.
+Open frontend files in your browser:
 
-User Login: Use user_login.html for user access to the job listings.
+Main Page: index.html
+
+Admin Login: admin_login.html
+
+User Login: user_login.html
