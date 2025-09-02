@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Portal</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <!-- AOS for scroll animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Lottie -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #0d0d0d;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: transparent;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+   @media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
+  nav a {
+    margin: 8px 0;
+  }
+}
+nav a {
+  color: #cbd5e1;
+  margin-right: 24px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  background: rgba(255, 255, 255, 0.05); /* 👈 Add this temporarily */
+}
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 0;
+      background: linear-gradient(90deg, #f0f0f0, #7dd3fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      margin-top: 20px;
+      max-width: 600px;
+    }
+
+    .hero .buttons {
+      margin-top: 30px;
+    }
+
+    .hero button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      margin: 0 10px;
+      border-radius: 8px;
+      border: none;
+      background: #6366f1;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .hero button:hover {
+      background: #4f46e5;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 100px 40px 60px;
+      gap: 24px;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      width: 300px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      color: #e5e7eb;
+    }
+
+    .feature h3 {
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .cta {
+      padding: 60px 20px;
+      text-align: center;
+      background: #111111;
+    }
+
+    .cta h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .cta button {
+      background: #10b981;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      background: #0d0d0d;
+      color: #64748b;
+    }
+
+    lottie-player {
+      margin-top: 60px;
+      width: 320px;
+      height: 320px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .features {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2 style="color:white;">JobHunt AI</h2>
+  <nav>
+    <a href="user_login.html">Login</a>
+    <a href="register.html">Register</a>
+    <a href="admin_login.html">Admin</a> <!-- ✅ Admin Login link -->
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 data-aos="fade-up">Find Your Dream Jobs. Get Hired Fast.</h1>
+  <p data-aos="fade-up" data-aos-delay="100">
+    Built for modern job seekers. Powered by automation. Designed for hiring velocity.
+  </p>
+  <div class="buttons" data-aos="fade-up" data-aos-delay="200">
+    <button onclick="location.href='jobs.html'">Explore Jobs</button>
+    <button onclick="location.href='register.html'">Join Now</button>
+  </div>
+
+  <lottie-player
+    src="https://assets6.lottiefiles.com/packages/lf20_u8o7BL.json"
+    background="transparent"
+    speed="1"
+    loop
+    autoplay
+    data-aos="fade-up"
+    data-aos-delay="300"
+  ></lottie-player>
+</section>
+
+<section class="features">
+  <div class="feature" data-aos="fade-up">
+    <h3>AI-Powered Matching</h3>
+    <p>We match your skills with the most relevant job openings instantly.</p>
+  </div>
+  <div class="feature" data-aos="fade-up" data-aos-delay="100">
+    <h3>One-Click Apply</h3>
+    <p>Save time and apply to jobs using one-click profile submission.</p>
+  </div>
+  <div class="feature" data-aos="fade-up" data-aos-delay="200">
+    <h3>Track & Grow</h3>
+    <p>Stay informed on your application status and prepare for interviews.</p>
+  </div>
+</section>
+
+<section class="cta" data-aos="zoom-in">
+  <h2>Join thousands of smart job seekers using JobHunt AI</h2>
+  <button onclick="location.href='register.html'">Create My Account</button>
+</section>
+
+<footer>
+  <p>&copy; 2025 JobHunt AI — Built with ❤️ by Vineeth</p>
+</footer>
+
+<script>
+  AOS.init();
+</script>
+
+</body>
+</html>

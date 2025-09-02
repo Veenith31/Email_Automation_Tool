@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Email Logs - Admin Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1581092919530-3c4f5be9d6c6') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    th {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #cbd5ff;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📨 Email Logs</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Candidate Email</th>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>john@example.com</td>
+          <td>Interview Schedule</td>
+          <td>✅ Sent</td>
+          <td>2025-08-04 11:23 AM</td>
+        </tr>
+        <tr>
+          <td>jane@example.com</td>
+          <td>Offer Letter</td>
+          <td>✅ Sent</td>
+          <td>2025-08-04 11:05 AM</td>
+        </tr>
+        <tr>
+          <td>mark@example.com</td>
+          <td>Application Rejection</td>
+          <td>❌ Failed</td>
+          <td>2025-08-03 5:18 PM</td>
+        </tr>
+        <!-- More rows can be dynamically added from backend -->
+      </tbody>
+    </table>
+
+    <a class="back-link" href="admin_dashboard.html">← Back to Dashboard</a>
+  </div>
+
+</body>
+</html>

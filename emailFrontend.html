@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Candidate Email Automation - Admin UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primary: #10b981;
+      --color-primary-dark: #0f766e;
+      --color-bg: #f9fafb;
+      --color-text: #1f2937;
+      --color-muted: #6b7280;
+      --color-border: #e5e7eb;
+      --radius: 14px;
+      --spacing: 18px;
+      --font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--color-text);
+      font-family: var(--font-family);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #059669, #10b981);
+      padding: var(--spacing);
+      color: white;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 980px;
+      margin: var(--spacing) auto;
+      padding: var(--spacing);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--color-primary-dark);
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: var(--spacing);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    button {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .candidates-list {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: var(--spacing);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: #f3f4f6;
+    }
+
+    .candidate-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .candidate-item:last-child {
+      border-bottom: none;
+    }
+
+    .send-log {
+      font-family: monospace;
+      background: #f1f5f9;
+      padding: var(--spacing);
+      border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+      white-space: pre-wrap;
+      height: 160px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <header>📧 Candidate Email Automation</header>
+  <main>
+    <!-- your form content here... -->
+
+  <h2>Manage Candidates</h2>
+  <form id="candidate-form">
+    <label for="candidate-name">Name</label>
+    <input type="text" id="candidate-name" required placeholder="John Doe" />
+
+    <label for="candidate-email">Email</label>
+    <input type="email" id="candidate-email" required placeholder="john@example.com" />
+
+    <button type="submit">Add Candidate</button>
+  </form>
+
+  <div class="candidates-list" id="candidates-list">
+    <p style="color: gray;">No candidates added yet.</p>
+  </div>
+
+ <h2>Email Template</h2>
+
+<label for="template-select">Select Template</label>
+<select id="template-select">
+  <option value="">-- Choose a template --</option>
+  <option value="interview">Interview Invitation</option>
+  <option value="rejection">Rejection</option>
+  <option value="offer">Job Offer</option>
+  <option value="followup">Follow-Up</option>
+</select>
+
+<label for="email-template">Email Content (Use <code>{{name}}</code> to personalize)</label>
+<textarea id="email-template" rows="8" placeholder="Select a template or write manually..."></textarea>
+
+
+  <button id="send-to-backend-btn">Send Emails</button>
+
+  <h2>Send Log</h2>
+  <div class="send-log" id="send-log">Logs will appear here...</div>
+</main>
+
+<<!-- Inside the <script> tag at the bottom -->
+
+<script>
+  const candidates = [];
+
+  const candidateForm = document.getElementById('candidate-form');
+  const candidatesListEl = document.getElementById('candidates-list');
+  const emailTemplateEl = document.getElementById('email-template');
+  const sendToBackendBtn = document.getElementById('send-to-backend-btn');
+  const sendLogEl = document.getElementById('send-log');
+  const templateSelect = document.getElementById('template-select');
+
+  const templates = {
+    interview: `Dear {{name}},\n\nWe are pleased to inform you that you have been selected for the next stage of the hiring process. Please reply to this email to confirm your availability for an interview.\n\nBest regards,\nHR Team \nJobHunt AI`,
+    rejection: `Dear {{name}},\n\nThank you for your interest in the position. After careful consideration, we regret to inform you that you have not been selected to proceed further.\n\nWe wish you all the best in your job search.\n\nSincerely,\nHR Team \nJobHunt AI`,
+    offer: `Dear {{name}},\n\nCongratulations! We are delighted to offer you the position. Please find the offer details attached. We look forward to having you on our team.\n\nBest regards,\nHR Team \nJobHunt AI`,
+    followup: `Hello {{name}},\n\nWe wanted to follow up on your recent application. Please let us know if you’re available for a quick chat this week.\n\nWarm regards,\nHR Team \nJobHunt AI`
+  };
+
+  templateSelect.addEventListener('change', () => {
+    const selected = templateSelect.value;
+    emailTemplateEl.value = templates[selected] || '';
+  });
+
+  function renderCandidates() {
+    if (candidates.length === 0) {
+      candidatesListEl.innerHTML = '<p style="color: gray;">No candidates added yet.</p>';
+      return;
+    }
+    candidatesListEl.innerHTML = '';
+    candidates.forEach((c, idx) => {
+      const div = document.createElement('div');
+      div.className = 'candidate-item';
+      div.innerHTML = `<span>${c.name} — ${c.email}</span>
+                       <button onclick="removeCandidate(${idx})">Remove</button>`;
+      candidatesListEl.appendChild(div);
+    });
+  }
+
+  function removeCandidate(index) {
+    candidates.splice(index, 1);
+    renderCandidates();
+  }
+
+  candidateForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nameInput = document.getElementById('candidate-name');
+    const emailInput = document.getElementById('candidate-email');
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+
+    if (!name || !email) return;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Invalid email address.');
+      return;
+    }
+
+    const exists = candidates.some(c => c.email === email);
+    if (exists) {
+      alert('Candidate already added.');
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/candidates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email })
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        candidates.push({ name, email });
+        renderCandidates();
+        nameInput.value = '';
+        emailInput.value = '';
+      } else {
+        alert(result.error || "Error saving candidate.");
+      }
+    } catch (err) {
+      alert("Network error: " + err.message);
+    }
+  });
+
+  sendToBackendBtn.addEventListener('click', async () => {
+    if (candidates.length === 0) {
+      alert("Please add at least one candidate.");
+      return;
+    }
+    const template = emailTemplateEl.value.trim();
+    if (!template) {
+      alert("Email template cannot be empty.");
+      return;
+    }
+
+    sendToBackendBtn.disabled = true;
+    sendLogEl.textContent = "Sending emails...\n";
+
+    try {
+      const res = await fetch("http://localhost:5000/api/send-emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ candidates, template })
+      });
+
+      const result = await res.json();
+      if (res.ok && result.results) {
+        result.results.forEach(r => {
+          sendLogEl.textContent += r.status === "sent"
+            ? `✔ ${r.email} — Sent\n`
+            : `✗ ${r.email} — Failed: ${r.error}\n`;
+        });
+      } else {
+        sendLogEl.textContent += `Error: ${result.error || "Unknown error"}\n`;
+      }
+    } catch (err) {
+      sendLogEl.textContent += `Network error: ${err.message}\n`;
+    }
+
+    sendToBackendBtn.disabled = false;
+  });
+
+  renderCandidates();
+</script>
+
+
+</body>
+</html>

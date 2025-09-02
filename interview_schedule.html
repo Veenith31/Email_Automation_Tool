@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Schedule</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <style>
+    body {
+      background: linear-gradient(to right, #dbeafe, #eff6ff);
+      font-family: 'Inter', sans-serif;
+      padding: 30px;
+    }
+    .table-container {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1e3a8a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container table-container">
+    <h2>📅 Scheduled Interviews</h2>
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-primary">
+        <tr>
+          <th>Candidate ID</th>
+          <th>Job ID</th>
+          <th>Recruiter ID</th>
+          <th>Time</th>
+          <th>Interview Link</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="interviewTable">
+        <!-- Data will be injected here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Example static data, replace this with fetch('/api/interviews') from backend
+    const interviews = [
+      {
+        candidate_id: 101,
+        job_id: 2001,
+        recruiter_id: 11,
+        scheduled_time: "2025-08-06 10:00 AM",
+        interview_link: "https://meet.google.com/abc-defg-hij",
+        status: "Pending"
+      },
+      {
+        candidate_id: 102,
+        job_id: 2002,
+        recruiter_id: 12,
+        scheduled_time: "2025-08-07 02:00 PM",
+        interview_link: "https://zoom.us/j/123456789",
+        status: "Completed"
+      }
+    ];
+
+    const tbody = document.getElementById("interviewTable");
+
+    interviews.forEach(interview => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${interview.candidate_id}</td>
+        <td>${interview.job_id}</td>
+        <td>${interview.recruiter_id}</td>
+        <td>${interview.scheduled_time}</td>
+        <td><a href="${interview.interview_link}" target="_blank">Join</a></td>
+        <td>${interview.status}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>

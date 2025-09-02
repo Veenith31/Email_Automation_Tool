@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Job - Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f1f5f9;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1d4ed8;
+      margin-bottom: 30px;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #1d4ed8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e3a8a;
+    }
+
+    .status {
+      margin-top: 12px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>➕ Add a New Job Opening</h2>
+
+<form id="jobForm">
+  <input type="text" id="title" placeholder="Job Title" required />
+  <textarea id="description" placeholder="Job Description" rows="6" required></textarea>
+  <button type="submit">Add Job</button>
+  <div class="status" id="status"></div>
+</form>
+
+<script>
+  document.getElementById("jobForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const title = document.getElementById("title").value.trim();
+    const description = document.getElementById("description").value.trim();
+
+    if (!title || !description) return;
+
+    const res = await fetch("http://localhost:5000/api/jobs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description })
+    });
+
+    const result = await res.json();
+    document.getElementById("status").textContent = res.ok
+      ? "✅ Job added successfully"
+      : "❌ " + (result.error || "Failed");
+  });
+</script>
+
+</body>
+</html>

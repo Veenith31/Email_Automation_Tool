@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Job Applications - Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #2563eb;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #2563eb;
+      color: white;
+    }
+
+    tbody tr:hover {
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📄 All Job Applications</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Job Title</th>
+      <th>Applied At</th>
+    </tr>
+  </thead>
+  <tbody id="appBody"></tbody>
+</table>
+
+<script>
+  async function loadApplications() {
+    const res = await fetch("http://localhost:5000/api/applications");
+    const data = await res.json();
+    const body = document.getElementById("appBody");
+
+    body.innerHTML = data.map(app => `
+      <tr>
+        <td>${app.name}</td>
+        <td>${app.email}</td>
+        <td>${app.job_title}</td>
+        <td>${new Date(app.applied_at).toLocaleString()}</td>
+      </tr>
+    `).join("");
+  }
+
+  window.onload = loadApplications;
+</script>
+
+</body>
+</html>

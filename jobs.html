@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Listings</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #222;
+      position: relative;
+    }
+
+    /* Overlay for readability */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: -1;
+    }
+
+    header {
+  background: linear-gradient(135deg, rgba(16, 17, 17, 0.9), rgba(37, 99, 235, 0.9));
+  padding: 24px 32px;
+  color: #f9fafb;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 800px;
+  backdrop-filter: blur(10px);
+}
+
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+
+    .job-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .job-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .job-title {
+      font-size: 1.3rem;
+      color: #1d4ed8;
+      margin-bottom: 6px;
+    }
+
+    .job-description {
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .apply-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .apply-btn:hover {
+      background-color: #1e40af;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal.active {
+      display: flex;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-content {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .modal-content button {
+      padding: 10px 16px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      background: transparent;
+      color: #999;
+      border: none;
+      font-size: 20px;
+      float: right;
+      cursor: pointer;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: #10b981;
+    }
+  </style>
+</head>
+<body>
+
+<header>Job Openings as of now</header>
+
+<div class="container" id="jobs-container">
+  <!-- Jobs will be injected here -->
+</div>
+
+<!-- Modal -->
+<div class="modal" id="apply-modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">×</button>
+    <h3>Apply for: <span id="modal-job-title"></span></h3>
+    <input type="text" id="applicant-name" placeholder="Your Name" required />
+    <input type="email" id="applicant-email" placeholder="Your Email" required />
+    <button onclick="submitApplication()">Submit Application</button>
+    <div class="status" id="apply-status"></div>
+  </div>
+</div>
+
+<script>
+  let selectedJobId = null;
+
+  async function fetchJobs() {
+    try {
+      const res = await fetch("http://localhost:5000/api/jobs");
+      const jobs = await res.json();
+      const container = document.getElementById("jobs-container");
+      container.innerHTML = "";
+
+      jobs.forEach(job => {
+        const div = document.createElement("div");
+        div.className = "job-card";
+        div.innerHTML = `
+          <div class="job-title">${job.title}</div>
+          <div class="job-description">${job.description}</div>
+          <button class="apply-btn" onclick="openModal('${job.title}', ${job.id})">Apply Now</button>
+        `;
+        container.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Error loading jobs:", error);
+    }
+  }
+
+  function openModal(title, jobId) {
+    document.getElementById("modal-job-title").textContent = title;
+    document.getElementById("apply-modal").classList.add("active");
+    selectedJobId = jobId;
+    document.getElementById("apply-status").textContent = "";
+  }
+
+  function closeModal() {
+    document.getElementById("apply-modal").classList.remove("active");
+    document.getElementById("applicant-name").value = "";
+    document.getElementById("applicant-email").value = "";
+    selectedJobId = null;
+  }
+
+  async function submitApplication() {
+    const name = document.getElementById("applicant-name").value.trim();
+    const email = document.getElementById("applicant-email").value.trim();
+
+    if (!name || !email || !selectedJobId) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, job_id: selectedJobId })
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        document.getElementById("apply-status").textContent = "✅ Application submitted!";
+        setTimeout(closeModal, 1500);
+      } else {
+        document.getElementById("apply-status").textContent = "❌ " + (result.error || "Submission failed");
+      }
+    } catch (err) {
+      document.getElementById("apply-status").textContent = "❌ Network error: " + err.message;
+    }
+  }
+
+  // Load jobs on page load
+  window.onload = fetchJobs;
+</script>
+
+</body>
+</html>
